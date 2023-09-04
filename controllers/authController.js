@@ -25,7 +25,8 @@ module.exports = new (class authController extends Controller {
           res.status(200).json({
             message: "کاربر با موفقیت ثبت شد",
             success: true,
-            token : token
+            token : token,
+            id : newUser.id
           });
         } )
       }
