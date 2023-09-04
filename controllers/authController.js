@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = new (class authController extends Controller {
   async createUser(req, res, next) {
+    // console.log(req.file.path.replace(/\\/g , '/').substring(6));
     try {
       let userValid = await User.findOne({ username: req.body.username });
       if (userValid) {
@@ -18,6 +19,7 @@ module.exports = new (class authController extends Controller {
           username: req.body.username,
           name: req.body.name ? req.body.name : "",
           password: bcrypt.hashSync(req.body.password, salt),
+          image : req.file ? req.file.path.replace(/\\/g , '/').substring(6) : null
         });
         await newUser.save();
 
@@ -26,7 +28,8 @@ module.exports = new (class authController extends Controller {
             message: "کاربر با موفقیت ثبت شد",
             success: true,
             token : token,
-            id : newUser.id
+            id : newUser.id,
+            image : newUser.image
           });
         } )
       }
@@ -45,6 +48,7 @@ module.exports = new (class authController extends Controller {
               name: user.name,
               username: user.username,
               token: token,
+              image: user.image
             });
           });
         } else {

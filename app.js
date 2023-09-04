@@ -7,9 +7,10 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/divar")
-  .then(() => console.log("Connected!"));
+.connect("mongodb://127.0.0.1:27017/divar")
+.then(() => console.log("Connected!"));
 
+app.use(express.static('./public'))
 app.use(express.urlencoded({ extended: false }));
 
 app.use(function (req, res, next) {

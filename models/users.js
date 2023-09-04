@@ -5,6 +5,7 @@ const newUser = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   name: { type: String },
+  image : {type : String}
 });
 
 module.exports = mongoose.model("user", newUser, "user");
