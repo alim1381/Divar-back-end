@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const config = require("../config");
-const jwt = require("jsonwebtoken");
-const verifyToken = require("../helper/verifyToken");
+const verify = require('./verify/verify')
 
 router.use("/auth", require("./auth"));
 
@@ -10,15 +9,8 @@ router.use("/posts", require("./posts"));
 
 router.use("/users", require("./users"));
 
-router.use(verifyToken, (req, res, next) => {
-  jwt.verify(req.token, "ali", (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      next();
-    }
-  });
-});
+router.use(verify);
+router.use('/update' , require('./updateUser'))
 
 // errors
 router.all("*", (req, res, next) => {

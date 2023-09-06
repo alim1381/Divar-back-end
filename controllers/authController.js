@@ -23,7 +23,7 @@ module.exports = new (class authController extends Controller {
         });
         await newUser.save();
 
-        jwt.sign({newUser} , "ali" , {  expiresIn : '1h'  } ,(err , token)=> {
+        jwt.sign({newUser} , process.env.SECRET_KEY , {  expiresIn : '1h'  } ,(err , token)=> {
           res.status(200).json({
             message: "کاربر با موفقیت ثبت شد",
             success: true,
@@ -42,7 +42,7 @@ module.exports = new (class authController extends Controller {
       let user = await User.findOne({ username: req.body.username });
       if (user) {
         if (await bcrypt.compare(req.body.password, user.password)) {
-          jwt.sign({ user }, "ali", {  expiresIn : '1h'  } ,(err, token) => {
+          jwt.sign({ user }, process.env.SECRET_KEY, {  expiresIn : '1h'  } ,(err, token) => {
             res.json({
               id : user.id,
               name: user.name,
