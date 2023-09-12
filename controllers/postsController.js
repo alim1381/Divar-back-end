@@ -3,30 +3,14 @@ const Posts = require("../models/posts");
 module.exports = new (class postsController extends Controller {
   async getAllPosts(req, res, next) {
     try {
-      let posts = await Posts.find({}).populate("userId", "-password");
-      posts.reverse()
-      const postArray = [];
-      let currentArray = [];
-      posts.map((post, index) => {
-        if (currentArray.length < 12 && index !== posts.length - 1) {
-          currentArray.push(post);
-        } else {
-          if (index === posts.length - 1) {
-            currentArray.push(post);
-          }
-          postArray.push(currentArray);
-          currentArray = [];
-        }
-      });
-
+      const pageSinze = 12
+      let posts = await Posts.find({}).sort({createAt : -1}).skip(req.query.page === 1 ? 0 : ((pageSinze *req.query.page)-pageSinze)).limit(pageSinze).populate("userId", "-password");
       setTimeout(() => {
         res.status(200).json({
-          data: req.query.page
-            ? postArray[req.query.page - 1] || []
-            : postArray[0],
+          data: posts,
           success: true,
         });
-      }, 3000);
+      }, 2000);
     } catch (err) {
       next(err);
     }
