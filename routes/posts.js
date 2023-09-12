@@ -10,6 +10,8 @@ router.get("/:id", postsController.getOnePost.bind(postsController));
 
 router.use(verify);
 
+router.delete('/',postsController.deletePost.bind(postsController))
+
 // create
 router.post("/create", postsController.createNewPost.bind(postsController));
 
